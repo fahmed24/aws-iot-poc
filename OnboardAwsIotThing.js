@@ -45,7 +45,7 @@ aws_sdk_1.config.update({ region: 'us-west-2' });
 // Create an ioT client
 var ioT = new aws_sdk_1.Iot();
 var createKeyAndCert = function () { return __awaiter(_this, void 0, void 0, function () {
-    var keysAndCert, e_1;
+    var keysAndCert, fileName, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -53,26 +53,20 @@ var createKeyAndCert = function () { return __awaiter(_this, void 0, void 0, fun
                 return [4 /*yield*/, ioT.createKeysAndCertificate({ setAsActive: true }).promise()];
             case 1:
                 keysAndCert = _a.sent();
+                fileName = void 0;
                 try {
+                    fileName = 'cert.pem';
                     fs_1.promises.writeFile(certAndKeyLocation + "/cert.pem", keysAndCert.certificatePem);
-                    console.log("cert.pem file created");
-                }
-                catch (e) {
-                    console.log("cert.pem file could not be created", e);
-                }
-                try {
+                    console.log(fileName + " file created");
+                    fileName = 'public.key';
                     fs_1.promises.writeFile(certAndKeyLocation + "/public.key", keysAndCert.keyPair.PublicKey);
-                    console.log("public.key file created");
-                }
-                catch (e) {
-                    console.log("public.key file could not be created", e);
-                }
-                try {
+                    console.log(fileName + " file created");
+                    fileName = 'private.key';
                     fs_1.promises.writeFile(certAndKeyLocation + "/private.key", keysAndCert.keyPair.PrivateKey);
-                    console.log("private.key file created");
+                    console.log(fileName + " file created");
                 }
                 catch (e) {
-                    console.log("private.key file could not be created", e);
+                    console.log("Error: " + fileName + " file could not be created", e);
                 }
                 return [2 /*return*/, keysAndCert.certificateId];
             case 2:
@@ -128,7 +122,7 @@ createKeyAndCert().then(function (certId) {
             }
         }),
         parameters: {
-            "ThingName": "cliTing",
+            "ThingName": "macbookTing",
             "Location": "CA",
             "CertificateId": certId.toString()
         }

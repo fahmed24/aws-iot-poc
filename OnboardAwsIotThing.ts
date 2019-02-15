@@ -13,26 +13,22 @@ let ioT = new Iot();
 let createKeyAndCert = async () => {
   try {
     let keysAndCert = await ioT.createKeysAndCertificate({setAsActive: true}).promise();
+    let fileName: string;
     try {
+      fileName = 'cert.pem';
       promises.writeFile(`${ certAndKeyLocation }/cert.pem`, keysAndCert.certificatePem);
-      console.log("cert.pem file created");
-    }
-    catch (e) {
-      console.log("cert.pem file could not be created", e);
-    }
-    try {
+      console.log(`${ fileName } file created`);
+
+      fileName = 'public.key';
       promises.writeFile(`${ certAndKeyLocation }/public.key`, keysAndCert.keyPair.PublicKey);
-      console.log("public.key file created");
-    }
-    catch (e) {
-      console.log("public.key file could not be created", e);
-    }
-    try {
+      console.log(`${ fileName } file created`);
+
+      fileName = 'private.key';
       promises.writeFile(`${ certAndKeyLocation }/private.key`, keysAndCert.keyPair.PrivateKey);
-      console.log("private.key file created");
+      console.log(`${ fileName } file created`);
     }
     catch (e) {
-      console.log("private.key file could not be created", e);
+      console.log(`Error: ${ fileName } file could not be created`, e);
     }
     return keysAndCert.certificateId;
   } catch (e) {
@@ -85,7 +81,7 @@ createKeyAndCert().then((certId) => {
       }
     }),
     parameters: {
-      "ThingName": "cliTing",
+      "ThingName": "macbookTing",
       "Location": "CA",
       "CertificateId": certId.toString()
     }
